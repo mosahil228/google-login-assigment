@@ -5,6 +5,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useDispatch} from 'react-redux';
+import { setUserData } from '../store/slices/UserSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -12,9 +13,11 @@ const Login = ({setProgress}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //google login functionality
+ 
   const onLoginSuccess=(res)=>{
     const user=jwtDecode(res.credential)
     localStorage.setItem('user', JSON.stringify(user));
+    dispatch(setUserData(user))
     setTimeout(() => {
       toast.success('Login Successfully', {
         position: "top-center",

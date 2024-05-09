@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { setUserData } from '../store/slices/UserSlice';
 import 'react-toastify/dist/ReactToastify.css';
 const Signup = ({setProgress}) => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Signup = ({setProgress}) => {
   const onLoginSuccess=(res)=>{
     const user=jwtDecode(res.credential)
     localStorage.setItem('user', JSON.stringify(user));
+    dispatch(setUserData(user))
     setTimeout(() => {
       toast.success('Signup Successfully', {
         position: "top-center",

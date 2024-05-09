@@ -40,7 +40,9 @@ const Navbar = () => {
 
     //getting userdata from redux
     const userData = useSelector((state) => {
+        console.log(state.user);
         return state.user;
+
     })
 
     //darkmode
