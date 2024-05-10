@@ -1,5 +1,5 @@
 import './App.css';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -8,50 +8,50 @@ import Home from './components/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoadingBar from 'react-top-loading-bar'
-import {useSelector } from 'react-redux';
-import { isInstagramApp } from 'react-device-detect';
+import { useSelector } from 'react-redux';
+
 
 
 const App = () => {
   const [progress, setProgress] = useState(50)
   const mode = useSelector((state) => {
     return state.user;
-})
+  })
 
-useEffect(() => {
-  // Function to open link in default browser
-  const openInDefaultBrowser = (url) => {
-    window.open(url, '_system');
-  };
+  useEffect(() => {
+    // Function to open link in default browser
+    const openInDefaultBrowser = (url) => {
+      window.open(url, '_system');
+    };
 
-  // Check if the app is opened within the Instagram in-app browser
-  if (isInstagramApp) {
-    openInDefaultBrowser('https://clonemytrips-assigment.netlify.app/');
-  }
-}, []);
+    // Check if the app is opened within the Instagram in-app browser
+    const isInstagramBrowser = navigator.userAgent.includes('Instagram');
+    if (isInstagramBrowser) {
+      openInDefaultBrowser('https://clonemytrips-assigment.netlify.app/');
+    }
+  }, []);
 
-  
   return (
-    <div style={{background:mode.darkMode.setDark?mode.darkMode.bgDark:mode.darkMode.bgLight}}>
-    
-    <GoogleOAuthProvider clientId={`${process.env.REACT_APP_MY_KEY}`}>
-      <BrowserRouter >
-        <LoadingBar
-          color='#1778F2'
-          progress={progress}
-          onLoaderFinished={() => setProgress(0)}
-        />
+    <div style={{ background: mode.darkMode.setDark ? mode.darkMode.bgDark : mode.darkMode.bgLight }}>
+
+      <GoogleOAuthProvider clientId={`${process.env.REACT_APP_MY_KEY}`}>
+        <BrowserRouter >
+          <LoadingBar
+            color='#1778F2'
+            progress={progress}
+            onLoaderFinished={() => setProgress(0)}
+          />
           <Navbar />
-        <Routes>
-          <Route path="/" element={<Home setProgress={setProgress} />} />
-          <Route path="/login" element={<Login setProgress={setProgress} />} />
-          <Route path="/signup" element={<Signup setProgress={setProgress} />} />
-          <Route path="/profile" element={<Profile setProgress={setProgress} />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home setProgress={setProgress} />} />
+            <Route path="/login" element={<Login setProgress={setProgress} />} />
+            <Route path="/signup" element={<Signup setProgress={setProgress} />} />
+            <Route path="/profile" element={<Profile setProgress={setProgress} />} />
+          </Routes>
 
-      </BrowserRouter>
+        </BrowserRouter>
 
-    </GoogleOAuthProvider>
+      </GoogleOAuthProvider>
     </div>
   )
 }
