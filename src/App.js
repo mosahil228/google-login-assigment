@@ -33,7 +33,7 @@ useEffect(() => {
         const target = event.target.closest('a');
         if (target && target.getAttribute('href') && !target.getAttribute('href').startsWith(window.location.origin)) {
           event.preventDefault();
-          window.open(target.getAttribute('href'), '_system');
+          window.open(target.getAttribute('href'), '_system _blank download');
         }
       });
     };
