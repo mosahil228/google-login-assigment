@@ -9,16 +9,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoadingBar from 'react-top-loading-bar'
 import {useSelector } from 'react-redux';
+import { isInstagramApp } from 'react-device-detect';
 
 
-function isInstagramBrowser() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  return userAgent.indexOf('Instagram') !== -1;
-}
-
-function isMobileDevice() {
-  return /Mobi/i.test(navigator.userAgent);
-}
 const App = () => {
   const [progress, setProgress] = useState(50)
   const mode = useSelector((state) => {
@@ -26,20 +19,17 @@ const App = () => {
 })
 
 useEffect(() => {
-  if (isInstagramBrowser() || isMobileDevice()) {
-    // If opened in Instagram in-app browser or mobile device, open external links in default browser
-    const handleExternalLinks = () => {
-      document.addEventListener('click', (event) => {
-        const target = event.target.closest('a');
-        if (target && target.getAttribute('href') && !target.getAttribute('href').startsWith(window.location.origin)) {
-          event.preventDefault();
-          window.open(target.getAttribute('href'), '_system _blank download');
-        }
-      });
-    };
-    handleExternalLinks();
+  // Function to open link in default browser
+  const openInDefaultBrowser = (url) => {
+    window.open(url, '_system');
+  };
+
+  // Check if the app is opened within the Instagram in-app browser
+  if (isInstagramApp) {
+    openInDefaultBrowser('https://clonemytrips-assigment.netlify.app/');
   }
 }, []);
+
   
   return (
     <div style={{background:mode.darkMode.setDark?mode.darkMode.bgDark:mode.darkMode.bgLight}}>
